@@ -11,7 +11,12 @@ var canvas = document.getElementById('cvs'),
     sky_2_offset = 0,
     sky_3_offset = 0,
     tower_offset = getRandomInt(0, 100),
-    images = {};
+    images = {},
+    muteBtn = document.getElementById('btn'),
+    music = new Audio('music.mp3');
+
+music.loop = true;
+music.play();
 
 // Define the languages
 canvas.width = width;
@@ -81,6 +86,23 @@ function render() {
 
 // Start our game
 tick();
+
+document.getElementById('container').style.width = cvs.clientWidth + "px";
+
+// Set the sound button toggle
+muteBtn.addEventListener("click", function() {
+    var tog = muteBtn.getAttribute('data-enabled');
+
+    if(tog == "true") {
+        muteBtn.src = "img/mute.png";
+        music.volume = 0;
+        muteBtn.setAttribute('data-enabled', 'false');
+    } else {
+        muteBtn.src = "img/sound.png";
+        music.volume = 1;
+        muteBtn.setAttribute('data-enabled', 'true');
+    }
+});
 
 /* Utility */
 function getRandomInt(min, max) {
