@@ -6,7 +6,7 @@ var canvas = document.getElementById('cvs'),
     running = true,
     width = 1250,
     height = 620,
-    imgs = ["grond", "sky", "sky_cloud_1", "sky_cloud_2", "sky_cloud_3", "wall", "barrel", "charge", "wheel"],
+    imgs = ["grond", "sky", "sky_cloud_1", "sky_cloud_2", "sky_cloud_3", "wall", "ball", "barrel", "charge", "wheel"],
     sky_1_offset = 0,
     sky_2_offset = 0,
     mouse = [null, null],
@@ -87,7 +87,7 @@ function update() {
         chargePower -= 0.8;
     }
 
-    // Min 68% - Max 90%
+    // Min 60% - Max 90%
     if(chargePower < 60 || chargePower > 90) {
         chargeState = !chargeState;
     }
@@ -96,6 +96,22 @@ function update() {
     let y = (199 + tower_offset) + (1035 * (chargePower / 900)) * Math.sin(barrelRotation * Math.PI / 180);
 
     chargeLoc = [x, y];
+
+    // Cannonball
+    if(ball) {
+        if(ball.pos[1] > 550) {
+            ball = null;
+            mayCharge = true;
+        } else {
+            ball.rot += 3;
+            ball.time += 0.1;
+
+            let X = ball.begin[0] + (ball.vx * ball.amp) * ball.time
+            let Y = ball.begin[1] + (ball.vy * ball.amp) * ball.time + 0.5 * 9.81 * Math.pow(ball.time, 2);
+
+            ball.pos = [X, Y];
+        }
+    }
 }
 
 function render() {
@@ -116,6 +132,11 @@ function render() {
         drawRotatedImage(images.charge, barrelRotation, chargeLoc[0], chargeLoc[1], (images.charge.width / 2) * (chargePower / 100), (images.charge.height / 2) * (chargePower / 100));
     }
 
+    // Cannonball
+    if(ball) {
+        drawRotatedImage(images.ball, ball.rot, ball.pos[0], ball.pos[1], images.ball.width * 0.9, images.ball.height * 0.9);
+    }
+
     // Cannon
     drawRotatedImage(images.barrel, barrelRotation, 45, 200 + tower_offset);
     gfx.drawImage(images.wheel, 25, 197 + tower_offset);
@@ -128,12 +149,31 @@ function render() {
     gfx.drawImage(images.grond, images.grond.width, 550);
     gfx.drawImage(images.grond, images.grond.width * 2, 550);
     gfx.drawImage(images.grond, images.grond.width * 3, 550);
-
-    // Debug
 }
 
 // Start our game
 tick();
+
+// This is called when a cannon ball gets fired
+function shoot() {
+    let x = 45 + 75 * Math.cos(barrelRotation * Math.PI / 180);
+    let y = (199 + tower_offset) + 75 * Math.sin(barrelRotation * Math.PI / 180);
+
+    let vx = chargePower * 2 * Math.cos(barrelRotation * Math.PI / 180);
+    let vy = chargePower * 2 * Math.sin(barrelRotation * Math.PI / 180);
+
+    let amp = Math.round((33 * (chargePower - 60) / 100) * 10) / 130;
+
+    ball = {
+        pos: [x, y],
+        begin: [x, y],
+        time: 0,
+        rot: 0,
+        vy: vy,
+        vx: vx,
+        amp: amp
+    }
+}
 
 document.getElementById('container').style.width = cvs.clientWidth + "px";
 
@@ -200,6 +240,10 @@ cvs.addEventListener('mousedown', function(evt) {
 });
 
 cvs.addEventListener('mouseup', function(evt) {
+    if(charging) {
+        shoot();
+    }
+
     charging = false;
 });
 
