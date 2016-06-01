@@ -23,14 +23,25 @@
             height: 40px;
             cursor: pointer;
         }
+
+        #knight {
+            position: absolute;
+            top: 350px;
+            left: 1100px;
+            height: 200px;
+            width: 80px;
+            background-color: red;
+        }
         </style>
     </head>
     <body>
         <div id="container">
             <canvas id="cvs"></canvas>
             <img id="btn" data-enabled="true" src="img/sound.png">
+            <div id="knight"></div>
         </div>
 
         <script src="main.js" charset="utf-8"></script>
+        <script src="knight.js" charset="utf-8"></script>
     </body>
 </html>
