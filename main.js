@@ -12,6 +12,7 @@ var canvas = document.getElementById('cvs'),
     mouse = [null, null],
     sky_3_offset = 0,
     tower_offset = getRandomInt(0, 100),
+    knights = [],
     bal = null,
     charging = false,
     mayCharge = true,
@@ -104,7 +105,7 @@ function update() {
             mayCharge = true;
         } else {
             ball.rot += 3;
-            ball.time += 0.1;
+            ball.time += 0.13;
 
             let X = ball.begin[0] + (ball.vx * ball.amp) * ball.time
             let Y = ball.begin[1] + (ball.vy * ball.amp) * ball.time + 0.5 * 9.81 * Math.pow(ball.time, 2);
@@ -112,6 +113,15 @@ function update() {
             ball.pos = [X, Y];
         }
     }
+
+    // Knights
+    knights.forEach(function(knight) {
+        knight.update();
+
+        if(knight.pos <= 50) {
+            running = false;
+        }
+    });
 }
 
 function render() {
@@ -140,6 +150,12 @@ function render() {
     // Cannon
     drawRotatedImage(images.barrel, barrelRotation, 45, 200 + tower_offset);
     gfx.drawImage(images.wheel, 25, 197 + tower_offset);
+
+    // knights
+    knights.forEach(function(knight) {
+        gfx.fillStyle = "red";
+        gfx.fillRect(knight.pos, 400, 30, 30);
+    });
 
     // Tower
     gfx.drawImage(images.wall, 0, 230 + tower_offset);
@@ -252,3 +268,9 @@ function getAngle(pos1, pos2) {
 
     return angle;
 }
+
+setInterval(function() {
+    let knight = new Knight();
+
+    knights.push(knight);
+}, 2500);
