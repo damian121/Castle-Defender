@@ -3,16 +3,33 @@
     <head>
         <meta charset="utf-8">
         <title>Castle Defender</title>
+        <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
         <style>
-        #cvs {
+        #container {
+            position: relative;
             border: 1px solid black;
             margin: 0 auto;
+        }
+
+        #cvs {
             display: block;
+        }
+
+        #btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
         }
         </style>
     </head>
     <body>
-        <canvas id="cvs"></canvas>
+        <div id="container">
+            <canvas id="cvs"></canvas>
+            <img id="btn" data-enabled="true" src="img/sound.png">
+        </div>
 
         <script src="main.js" charset="utf-8"></script>
     </body>
