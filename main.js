@@ -6,7 +6,8 @@ var canvas = document.getElementById('cvs'),
     running = true,
     width = 1250,
     height = 620,
-    imgs = ["grond", "sky", "sky_cloud_1", "sky_cloud_2", "sky_cloud_3", "wall", "ball", "barrel", "charge", "wheel"],
+    spawnSpeed = 1500,
+    imgs = ["grond", "sky", "sky_cloud_1", "knight", "leg_1", "leg_2", "sky_cloud_2", "sky_cloud_3", "wall", "ball", "barrel", "charge", "wheel"],
     sky_1_offset = 0,
     sky_2_offset = 0,
     mouse = [null, null],
@@ -116,10 +117,27 @@ function update() {
 
     // Knights
     knights.forEach(function(knight) {
-        knight.update();
+        if(knight.alive) {
+            knight.update();
+        } else {
+            knight.dead();
+        }
 
         if(knight.pos <= 50) {
-            running = false;
+            // running = false;
+        }
+
+        // 480
+        if(ball && getDistance(ball.pos, [knight.pos, 500]) <= 56) {
+            knight.alive = false;
+            knight.deathVel = -2.3;
+        }
+
+        // Increase the spawn speed
+        spawnSpeed -= 0.001;
+
+        if(spawnSpeed <= 400) {
+            spawnSpeed = 400;
         }
     });
 }
@@ -153,8 +171,9 @@ function render() {
 
     // knights
     knights.forEach(function(knight) {
-        gfx.fillStyle = "red";
-        gfx.fillRect(knight.pos, 400, 30, 30);
+        drawRotatedImage(images.leg_2, knight.legProgress, knight.pos + 22, 532 + knight.deathPos);
+        drawRotatedImage(images.leg_1, knight.legProgress - (knight.legProgress * 2), knight.pos + 22, 532 + knight.deathPos);
+        gfx.drawImage(images.knight, knight.pos, 458 + knight.deathPos);
     });
 
     // Tower
@@ -217,6 +236,14 @@ function drawRotatedImage(img, angle, x, y) {
     drawRotatedImage(img, angle, x, y, img.width, img.height);
 }
 
+function getDistance(pos1, pos2) {
+    let x1 = pos1[0],
+        y1 = pos1[1],
+        x2 = pos2[0],
+	    y2 = pos2[1];
+	return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+}
+
 var TO_RADIANS = Math.PI/180;
 
 function drawRotatedImage(image, angle, x, y, width, height) {
@@ -263,14 +290,43 @@ cvs.addEventListener('mouseup', function(evt) {
     charging = false;
 });
 
+document.addEventListener('keydown', function(evt) {
+    if(mayCharge && evt.which == 32) {
+        if(!charging) {
+            chargePower = 60;
+        }
+
+        charging = true;
+        mayCharge = false;
+    }
+});
+
+document.addEventListener('keyup', function(evt) {
+    if(charging && evt.which == 32) {
+        shoot();
+    }
+
+    charging = false;
+});
+
 function getAngle(pos1, pos2) {
     let angle = Math.atan2(pos2[1] - pos1[1], pos2[0] - pos1[0]) * (180/Math.PI);
 
     return angle;
 }
 
-setInterval(function() {
+function spawn() {
     let knight = new Knight();
 
     knights.push(knight);
-}, 2500);
+
+    setTimeout(function() {
+        spawn();
+    }, spawnSpeed);
+}
+
+// Spawn the first knight
+spawn();
+
+// Show the canvas
+document.getElementById('container').style.opacity = 1;
