@@ -5,6 +5,14 @@
         <title>Castle Defender</title>
         <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
         <style>
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
         #container {
             position: relative;
             border: 1px solid black;
@@ -13,6 +21,7 @@
 
         #cvs {
             display: block;
+            cursor: crosshair;
         }
 
         #btn {
@@ -35,10 +44,9 @@
         </style>
     </head>
     <body>
-        <div id="container">
-            <canvas id="cvs"></canvas>
-            <img id="btn" data-enabled="true" src="img/sound.png">
-            <div id="knight"></div>
+        <div onmousedown="return false;" id="container">
+            <canvas id="cvs" onmousedown="return false;"></canvas>
+            <img id="btn" onmousedown="return false;" data-enabled="true" src="img/sound.png">
         </div>
 
         <script src="main.js" charset="utf-8"></script>
