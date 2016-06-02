@@ -26,20 +26,81 @@
 
         #btn {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 40px;
-            height: 40px;
+            top: 23px;
+            right: 35px;
+            width: 80px;
+            height: 80px;
             cursor: pointer;
         }
 
-        #knight {
+        #score {
             position: absolute;
-            top: 350px;
-            left: 1100px;
-            height: 200px;
-            width: 80px;
-            background-color: red;
+            left: 35px;
+            top: 35px;
+            width: 130px;
+            height: 57px;
+            color: white;
+            font-size: 3em;
+            text-align: center;
+            text-shadow: 0 0 10px black,0 0 10px black;
+        }
+
+        #menu {
+            width: 942px;
+            height: 522px;
+            background-repeat: no-repeat;
+            background-image: url('img/menu.png');
+            background-size: cover;
+            position: absolute;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+            top: 20px;
+            display: none;
+            opacity: 0;
+        }
+
+        #button {
+            position: absolute;
+            left: 0;
+            right: 0px;
+            margin: 0 auto;
+            bottom: 65px;
+            background-image: url('img/button.png');
+            width: 176px;
+            height: 96px;
+            color: white;
+            background-repeat: no-repeat;
+            font-size: 2em;
+            padding-top: 28px;
+            text-shadow: 0 0 10px black,0 0 10px black;
+            text-align: center;
+            font-family: sans-serif;
+            cursor: pointer;
+        }
+
+        #content {
+            width: 59%;
+            margin: 0 auto;
+            margin-top: 100px;
+        }
+
+        .side {
+            text-shadow: 0 0 10px black,0 0 10px black;
+            text-align: center;
+            font-family: sans-serif;
+            font-size: 2em;
+            color: white;
+        }
+
+        #menu-score, #menu-high-score {
+            font-size: 3em;
+            padding-top: 12px;
+        }
+
+        .right {
+            position: relative;
+            left: 23px;
         }
         </style>
     </head>
@@ -47,9 +108,24 @@
         <div onmousedown="return false;" id="container">
             <canvas id="cvs" onmousedown="return false;"></canvas>
             <img id="btn" onmousedown="return false;" data-enabled="true" src="img/sound.png">
+            <div id="score">0</div>
+            <div id="menu">
+                <div id="content">
+                    <div class="side" style="float: left">
+                        Score:<br>
+                        <div id="menu-score">0</div>
+                    </div>
+                    <div class="side right" style="float: right">
+                        Highscore:<br>
+                        <div id="menu-high-score">0</div>
+                    </div>
+                </div>
+                <div id="button" onClick="restart()">Opnieuw</div>
+            </div>
         </div>
 
         <script src="knight.js" charset="utf-8"></script>
+        <script src="meeuw.js" charset="utf-8"></script>
         <script src="main.js" charset="utf-8"></script>
     </body>
 </html>
