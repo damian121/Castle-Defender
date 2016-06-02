@@ -251,8 +251,12 @@ function render() {
         drawRotatedImage(images.meeuw_vleugels, meeuw.rot, meeuw.pos + 39, meeuw.hoogte + 13);
     }
 
-    // Score Board
+    // Score Boards
     gfx.drawImage(images.bord, 20, 20, images.bord.width * 0.9, images.bord.height * 0.9);
+
+    if(highscore > 0) {
+        gfx.drawImage(images.bord, 200, 20, images.bord.width * 0.9, images.bord.height * 0.9);
+    }
 
     // Sound baord
     gfx.drawImage(images.bord_mini, width - images.bord_mini.width - 20, 20, images.bord_mini.width * 0.9, images.bord_mini.height * 0.9);
@@ -460,6 +464,13 @@ function restart() {
     tower_offset = getRandomInt(0, 150);
 
     scoreObj.innerHTML = 0;
+
+    if(highscore > 0) {
+        let hs = document.getElementById('highscore');
+
+        hs.style.display = "block";
+        hs.innerHTML = "Best:<br>"+ highscore;
+    }
 
     let opacity = 1;
 

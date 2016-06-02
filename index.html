@@ -45,6 +45,19 @@
             text-shadow: 0 0 10px black,0 0 10px black;
         }
 
+        #highscore {
+            position: absolute;
+            left: 216px;
+            top: 35px;
+            width: 130px;
+            height: 57px;
+            color: white;
+            font-size: 1.6em;
+            text-align: center;
+            text-shadow: 0 0 10px black,0 0 10px black;
+            display: none;
+        }
+
         #menu {
             width: 942px;
             height: 522px;
@@ -109,6 +122,7 @@
             <canvas id="cvs" onmousedown="return false;"></canvas>
             <img id="btn" onmousedown="return false;" data-enabled="true" src="img/sound.png">
             <div id="score">0</div>
+            <div id="highscore"></div>
             <div id="menu">
                 <div id="content">
                     <div class="side" style="float: left">
